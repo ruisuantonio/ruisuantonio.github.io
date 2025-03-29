@@ -56,5 +56,4 @@ jobs:
       - name: Commit and Push Changes
         run: |
           git add index.mkd
-          git commit -m "Update redirect URL to point to current GitHub username"
-          git push origin main
+          git diff --exit-code || (git commit -m "Update redirect URL to point to current GitHub username" && git push origin main)
