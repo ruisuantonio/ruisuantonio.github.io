@@ -1,2 +1,2 @@
 Share my profile using the url:<br>
-rusinavostok.github.io or github.com/rusinavostok
+https://rusinavostok.github.io or https://github.com/rusinavostok
