@@ -12,7 +12,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Get GitHub Username
+      # Step 1: Checkout the repository (important for git commands)
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Get GitHub Username
       - name: Get GitHub Username
         id: get_username
         run: |
@@ -20,7 +24,7 @@ jobs:
           https://api.github.com/user | jq -r .login)
           echo "USERNAME=$USERNAME" >> $GITHUB_ENV
 
-      # Step 2: Get Repository Name
+      # Step 3: Get Repository Name
       - name: Get Repository Name
         id: get_repo_name
         run: |
@@ -28,14 +32,14 @@ jobs:
           https://api.github.com/repos/${{ github.repository }} | jq -r .name)
           echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
 
-      # Step 3: Check if GitHub Pages subdomain is different from username
+      # Step 4: Check if GitHub Pages subdomain is different from username
       - name: Check GitHub Pages Subdomain
         id: check_pages_name
         run: |
           PAGE_NAME="${{ github.repository_owner }}"
           echo "PAGE_NAME=$PAGE_NAME" >> $GITHUB_ENV
 
-      # Step 4: Rename Repository if Necessary
+      # Step 5: Rename Repository if Necessary
       - name: Rename Repository if Needed
         if: env.PAGE_NAME != env.USERNAME
         run: |
@@ -45,14 +49,14 @@ jobs:
           -d '{"name": "'"$USERNAME"'"}' \
           https://api.github.com/repos/${{ github.repository }}
 
-      # Step 5: Update index.mkd redirect_url with username if needed
+      # Step 6: Update index.mkd redirect_url with username if needed
       - name: Update Redirect URL in index.mkd
         run: |
           if [[ -f "index.mkd" ]]; then
             sed -i "s|https://github.com/[^ ]*|https://github.com/${{ env.USERNAME }}|g" index.mkd
           fi
 
-      # Step 6: Commit and Push the Changes
+      # Step 7: Commit and Push the Changes
       - name: Commit and Push Changes
         run: |
           git add index.mkd
