@@ -55,8 +55,6 @@ jobs:
       # Step 6: Commit and Push the Changes
       - name: Commit and Push Changes
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "github-actions@github.com"
-          git add pages/index.mkd
+          git add index.mkd
           git commit -m "Update redirect URL to point to current GitHub username"
           git push origin main
