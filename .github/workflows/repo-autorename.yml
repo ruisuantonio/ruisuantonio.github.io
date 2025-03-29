@@ -48,7 +48,6 @@ jobs:
       # Step 5: Update index.mkd redirect_url with username if needed
       - name: Update Redirect URL in index.mkd
         run: |
-          cd pages
           if [[ -f "index.mkd" ]]; then
             sed -i "s|https://github.com/[^ ]*|https://github.com/${{ env.USERNAME }}|g" index.mkd
           fi
