@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Share This Profile</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+      padding: 1rem;
+    }
+    a {
+      color: #007aff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const shareData = {
+      title: 'Luis Antonio',
+      text: 'Take a look at this personal space:',
+      url: '{{ page.share_url }}'
+    };
+
+    if (navigator.share) {
+      navigator.share(shareData).catch((error) => {
+        console.error('Sharing failed:', error);
+        document.body.innerHTML = `
+          <p>Couldn’t open the share dialog.</p>
+          <p><a href="${shareData.url}">Visit the profile instead</a></p>
+        `;
+      });
+    } else {
+      document.body.innerHTML = `
+        <div>
+          <p>Sharing isn’t supported on this browser.</p>
+          <p><a href="${shareData.url}">Visit the profile here</a></p>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
