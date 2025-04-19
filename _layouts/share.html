@@ -15,40 +15,39 @@
       margin: 0;
       text-align: center;
       padding: 1rem;
+      cursor: pointer;
+      user-select: none;
     }
-    a {
-      color: #007aff;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
+    h1 {
+      font-size: 1.5rem;
+      max-width: 400px;
     }
   </style>
 </head>
 <body>
+  <h1>Tap anywhere to share this profile</h1>
+
   <script>
     const shareData = {
       title: 'Luis Antonio',
-      text: 'Take a look at this personal space:',
+      text: 'Check out this personal space:',
       url: '{{ page.share_url }}'
     };
 
-    if (navigator.share) {
-      navigator.share(shareData).catch((error) => {
-        console.error('Sharing failed:', error);
-        document.body.innerHTML = `
-          <p>Couldn’t open the share dialog.</p>
-          <p><a href="${shareData.url}">Visit the profile instead</a></p>
-        `;
-      });
-    } else {
-      document.body.innerHTML = `
-        <div>
-          <p>Sharing isn’t supported on this browser.</p>
-          <p><a href="${shareData.url}">Visit the profile here</a></p>
-        </div>
-      `;
-    }
+    document.body.addEventListener('click', async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+        } catch (err) {
+          console.warn('Sharing was cancelled or failed.', err);
+        }
+      } else {
+        alert('Sharing is not supported on this browser.');
+      }
+
+      // Redirect to the profile after share attempt
+      window.location.href = shareData.url;
+    }, { once: true });
   </script>
 </body>
 </html>
